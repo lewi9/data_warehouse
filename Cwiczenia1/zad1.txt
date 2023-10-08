@@ -1,0 +1,9 @@
+WITH _order_price AS (
+	SELECT order_id, order_date, SUM(total_price) AS sum_total_price
+	FROM pizza_sales 
+	GROUP BY order_id, order_date
+)
+
+SELECT AVG(sum_total_price) AS mean_order_price
+FROM _order_price 
+WHERE order_date LIKE '2015-02-18'

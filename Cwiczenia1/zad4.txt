@@ -1,0 +1,25 @@
+WITH _order_price AS (
+	SELECT order_id, order_date, SUM(total_price) AS sum_total_price
+	FROM pizza_sales 
+	GROUP BY order_id, order_date
+),
+_month AS (
+	SELECT order_date AS _date, LEFT(order_date, 7) AS _month
+	FROM pizza_sales
+),
+_order_price_month AS (
+	SELECT * 
+	FROM _order_price AS a
+	LEFT JOIN _month AS b on a.order_date = b._date
+	GROUP BY order_id, order_date, sum_total_price, _date, _month
+),
+_avg_month AS (
+	SELECT AVG(sum_total_price) as average_month_amount, _month 
+	FROM _order_price_month
+	GROUP BY _month
+)
+
+SELECT a.order_id, a.sum_total_price AS total_amount, b.average_month_amount, a.order_date AS date
+FROM _order_price_month AS A
+LEFT JOIN _avg_month AS B on a._month = b._month
+GROUP BY a.order_id, a.sum_total_price, b.average_month_amount, a.order_date

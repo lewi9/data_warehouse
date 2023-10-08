@@ -1,0 +1,11 @@
+WITH _order_price AS (
+	SELECT order_id, order_date, SUM(total_price) AS sum_total_price
+	FROM pizza_sales 
+	GROUP BY order_id, order_date
+)
+
+-- In any February
+SELECT TOP 10 order_id, sum_total_price, order_date,
+RANK() OVER( ORDER BY sum_total_price DESC) AS rank
+FROM _order_price
+WHERE order_date LIKE '%-02-%'

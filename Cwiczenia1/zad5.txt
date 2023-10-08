@@ -1,0 +1,14 @@
+WITH _hourly AS (
+	SELECT order_id, order_date as date, LEFT(order_time, 2) AS hour
+	FROM pizza_sales
+),
+_hourly_no_dups AS(
+	SELECT order_id, date, hour 
+	FROM _hourly
+	GROUP BY order_id, date, hour
+)
+
+SELECT COUNT(order_id) AS order_count, date, hour 
+FROM _hourly_no_dups
+GROUP BY date, hour
+ORDER BY date, hour

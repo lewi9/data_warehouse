@@ -1,0 +1,4 @@
+SELECT SUM(quantity) as pizza_amount, pizza_name, pizza_category
+FROM pizza_sales
+WHERE order_date LIKE '2015-01-%'
+GROUP BY pizza_name, pizza_category

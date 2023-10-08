@@ -1,0 +1,6 @@
+SELECT pizza_size as size, SUM(quantity) as count
+FROM pizza_sales
+WHERE LEFT(order_date, 7) IN ('2015-02', '2015-03')
+GROUP BY pizza_size
+
+
